@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "NBTTV",
+  "homepage_url": "http://localhost:8080/",
+  "description": "Remove channels from ttv via keywords.",
+  "version": "0.1",
+  "browser_action": {
+    "default_title": "Test Extension"
+  },
+  "permissions": [
+    "https://www.twitch.tv/*",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.twitch.tv/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
