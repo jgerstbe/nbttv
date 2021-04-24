@@ -13,6 +13,12 @@ Channels can be filtered by keywords which will be checked against the text in a
 
 ![Example](/assets/example.png)
 
+## how to install
+- download or clone
+- visit `chrome://extensions/` / `brave://extensions/`
+- enable developer mode
+- load extension via `load unpacked extension`
+- or drag and drop release `nbttv_<version>.zip` from `releases` folder
 ## filterlists - *coming soon*
 You can subscribe to public filterlists to keep up to date with content that should be filtered.
 
