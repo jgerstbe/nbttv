@@ -1,15 +1,15 @@
 {
-    "name": "defaults",
+    "name": "Default SFW",
     "author": "anon",
-    "url": "",
-    "keywods": [
-      "stretch",
+    "url": "https://raw.githubusercontent.com/jgerstbe/nbttv/filterlists/assets/default.json",
+    "keywords": [
       "hot tub",
       "hottub",
       "jacuzzi",
       "yoga",
-      "pool"
+      "pool",
+      "bikini"
     ],
     "embeds": ["<img src='https://dummyimage.com/600x400/0e0e10/a970ff&text=+NBTTV+'>"],
-    "timestamp": 1619274807917
+    "timestamp": 1619287911719
   }

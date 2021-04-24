@@ -1,24 +1,10 @@
-let keywords = [
-    'stretch',
-    'hot tub',
-    'hottub',
-    'jacuzzi',
-    'yoga',
-    'pool',
-];
-
-let embeds = [
-    `<img src="https://dummyimage.com/600x400/0e0e10/a970ff&text=+NBTTV+">`,
-];
-
-let redirect = {
-    channelNames: ['twitch'],
-    targets: ['https://www.twitch.tv/p/en/legal/community-guidelines/']
-};
-
-
 let previewCount = null;
 let lastUrl = null;
+let interval;
+
+let redirect = [];
+let keywords = [];
+let embeds = [];
 
 /**
  * Scans DOM elments from the selectors array for
@@ -90,6 +76,51 @@ function scanForBonks() {
     previewCount = selectors.length;
 }
 
+function loadListsFromStorage() {
+    chrome.storage.sync.get("filterLists", (data) => {
+        console.log('store filterLists', data);
+        let lists = data.filterLists;
+
+        if (!lists || lists.length == 0) {
+            lists = [
+                {
+                    "name": "defaults",
+                    "author": "anon",
+                    "url": "https://raw.githubusercontent.com/jgerstbe/nbttv/filterlists/assets/default.json",
+                    "keywords": [
+                      "stretch",
+                      "hot tub",
+                      "hottub",
+                      "jacuzzi",
+                      "yoga",
+                      "pool",
+                      "redirect"
+                    ],
+                    "embeds": ["<img src='https://dummyimage.com/600x400/0e0e10/a970ff&text=+NBTTV+'>"],
+                    "timestamp": 1619274807917
+                }
+            ];
+        }
+
+        lists.forEach((list, index) => {
+            // TODO save lists in storage & load from storage
+            fetch(list.url)
+                .then((r) => r.json())
+                .then(e => {
+                    console.log(e);
+                    keywords = [...keywords, ...e.keywods];
+                    embeds = [...embeds, ...e.embeds];
+                    console.log(keywords, embeds)
+                    if (index === (lists.length-1)) {
+                        // TODO remove duplicates from keywords
+                        setTimeout(burst, 500);
+                        interval = setInterval(scanForBonks, 5000);
+                    }
+                })
+        });
+    });
+}
+
 /**
  * Run three scans in quick succession.
  */
@@ -100,6 +131,5 @@ function burst() {
 }
 
 window.onload = function() {
-    setTimeout(burst, 500);
-    setInterval(scanForBonks, 5000);
+    loadListsFromStorage();
 }
