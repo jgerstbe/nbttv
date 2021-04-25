@@ -79,24 +79,26 @@ function loadListsFromStorage() {
     chrome.storage.sync.get("filterLists", (data) => {
         let lists = data.filterLists;
 
-        lists.forEach((list, index) => {
-            fetch(list.url)
-                .then((r) => r.json())
-                .then(e => {
-                    lists[index] = e;
-                    keywords = [...keywords, ...e.keywords];
-                    embeds = [...embeds, ...e.embeds];
-                    if (index === (lists.length-1)) {
-                        // save lists in storage
-                        chrome.storage.sync.set({'filterLists': lists});
-                        // remove duplicates from keywords
-                        keywords = [...new Set(keywords)];
-                        // start scan
-                        setTimeout(burst, 500);
-                        interval = setInterval(scanForBonks, 5000);
-                    }
-                })
-        });
+        if (lists && lists.length > 0) {
+            lists.forEach((list, index) => {
+                fetch(list.url)
+                    .then((r) => r.json())
+                    .then(e => {
+                        lists[index] = e;
+                        keywords = [...keywords, ...e.keywords];
+                        embeds = [...embeds, ...e.embeds];
+                        if (index === (lists.length-1)) {
+                            // save lists in storage
+                            chrome.storage.sync.set({'filterLists': lists});
+                            // remove duplicates from keywords
+                            keywords = [...new Set(keywords)];
+                            // start scan
+                            setTimeout(burst, 500);
+                            interval = setInterval(scanForBonks, 5000);
+                        }
+                    })
+            });
+        }
     });
 }
 
