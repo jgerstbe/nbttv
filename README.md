@@ -33,9 +33,9 @@ The required format is as follows:
   "author": "<author>",
   "keywords": [<keyword>...],
   "embeds": [<html-string>...],
-  "redirect": [
+  "redirect": {
       "channelNames": [<channelName>, ...],
       "targets" : [<url>, ...]
-  ]
+  }
 }
 ```

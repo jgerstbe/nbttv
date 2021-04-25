@@ -2,7 +2,10 @@ let previewCount = null;
 let lastUrl = null;
 let interval;
 
-let redirect = [];
+let redirect = {
+    channelNames: [],
+    targets: []
+};
 let keywords = [];
 let embeds = [];
 
@@ -87,6 +90,8 @@ function loadListsFromStorage() {
                         lists[index] = e;
                         keywords = [...keywords, ...e.keywords];
                         embeds = [...embeds, ...e.embeds];
+                        redirect.channelNames = [...redirect.channelNames, ...e.redirect.channelNames]; 
+                        redirect.targets = [...redirect.targets, ...e.redirect.targets]; 
                         if (index === (lists.length-1)) {
                             // save lists in storage
                             chrome.storage.sync.set({'filterLists': lists});
