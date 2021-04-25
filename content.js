@@ -1,24 +1,10 @@
-let keywords = [
-    'stretch',
-    'hot tub',
-    'hottub',
-    'jacuzzi',
-    'yoga',
-    'pool',
-];
-
-let embeds = [
-    `<img src="https://dummyimage.com/600x400/0e0e10/a970ff&text=+NBTTV+">`,
-];
-
-let redirect = {
-    channelNames: ['twitch'],
-    targets: ['https://www.twitch.tv/p/en/legal/community-guidelines/']
-};
-
-
 let previewCount = null;
 let lastUrl = null;
+let interval;
+
+let redirect = [];
+let keywords = [];
+let embeds = [];
 
 /**
  * Scans DOM elments from the selectors array for
@@ -51,7 +37,6 @@ function runBoyRun(url) {
         !Array.isArray(redirect.channelNames) ||
         !Array.isArray(redirect.targets)
     ) {
-        console.log('NOTHING TO RUN FROM');
         return;
     }
     redirect.channelNames.every(keyword => {
@@ -90,6 +75,33 @@ function scanForBonks() {
     previewCount = selectors.length;
 }
 
+function loadListsFromStorage() {
+    chrome.storage.sync.get("filterLists", (data) => {
+        let lists = data.filterLists;
+
+        if (lists && lists.length > 0) {
+            lists.forEach((list, index) => {
+                fetch(list.url)
+                    .then((r) => r.json())
+                    .then(e => {
+                        lists[index] = e;
+                        keywords = [...keywords, ...e.keywords];
+                        embeds = [...embeds, ...e.embeds];
+                        if (index === (lists.length-1)) {
+                            // save lists in storage
+                            chrome.storage.sync.set({'filterLists': lists});
+                            // remove duplicates from keywords
+                            keywords = [...new Set(keywords)];
+                            // start scan
+                            setTimeout(burst, 500);
+                            interval = setInterval(scanForBonks, 5000);
+                        }
+                    })
+            });
+        }
+    });
+}
+
 /**
  * Run three scans in quick succession.
  */
@@ -100,6 +112,5 @@ function burst() {
 }
 
 window.onload = function() {
-    setTimeout(burst, 500);
-    setInterval(scanForBonks, 5000);
+    loadListsFromStorage();
 }
