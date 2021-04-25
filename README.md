@@ -22,15 +22,17 @@ Build using [vue](https://vuejs.org/), [tailwind](https://tailwindcss.com/) and 
 - load extension via `load unpacked extension`
 - or drag and drop release `nbttv_<version>.zip` from `releases` folder
 ## filterlists
-You can subscribe to public filterlists to keep up to date with content that should be filtered.
+You can subscribe to public filter lists to keep up to date with content that should be filtered.
 
-These lists have to implement the following format:
+Filter lists have be publicly accessible via http get an support cors.
+
+The required format is as follows:
 ```
 {
   "name" : "<name>",
   "url": "<url>",
   "author": "<author>",
-  "keywods": [<keyword>...],
+  "keywords": [<keyword>...],
   "embeds": [<html-string>...],
   "redirect": [
       "channelNames": [<channelName>, ...],

@@ -37,7 +37,6 @@ function runBoyRun(url) {
         !Array.isArray(redirect.channelNames) ||
         !Array.isArray(redirect.targets)
     ) {
-        console.log('NOTHING TO RUN FROM');
         return;
     }
     redirect.channelNames.every(keyword => {
@@ -78,41 +77,21 @@ function scanForBonks() {
 
 function loadListsFromStorage() {
     chrome.storage.sync.get("filterLists", (data) => {
-        console.log('store filterLists', data);
         let lists = data.filterLists;
 
-        if (!lists || lists.length == 0) {
-            lists = [
-                {
-                    "name": "defaults",
-                    "author": "anon",
-                    "url": "https://raw.githubusercontent.com/jgerstbe/nbttv/filterlists/assets/default.json",
-                    "keywords": [
-                      "stretch",
-                      "hot tub",
-                      "hottub",
-                      "jacuzzi",
-                      "yoga",
-                      "pool",
-                      "redirect"
-                    ],
-                    "embeds": ["<img src='https://dummyimage.com/600x400/0e0e10/a970ff&text=+NBTTV+'>"],
-                    "timestamp": 1619274807917
-                }
-            ];
-        }
-
         lists.forEach((list, index) => {
-            // TODO save lists in storage & load from storage
             fetch(list.url)
                 .then((r) => r.json())
                 .then(e => {
-                    console.log(e);
-                    keywords = [...keywords, ...e.keywods];
+                    lists[index] = e;
+                    keywords = [...keywords, ...e.keywords];
                     embeds = [...embeds, ...e.embeds];
-                    console.log(keywords, embeds)
                     if (index === (lists.length-1)) {
-                        // TODO remove duplicates from keywords
+                        // save lists in storage
+                        chrome.storage.sync.set({'filterLists': lists});
+                        // remove duplicates from keywords
+                        keywords = [...new Set(keywords)];
+                        // start scan
                         setTimeout(burst, 500);
                         interval = setInterval(scanForBonks, 5000);
                     }

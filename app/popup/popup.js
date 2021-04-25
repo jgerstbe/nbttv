@@ -1,4 +1,4 @@
-import { setFilterLists, getFilterLists } from '../store.js';
+import * as store from '../store.js';
 
 new Vue({
     el: '#popup',
@@ -6,19 +6,17 @@ new Vue({
         return {
             message: 'You loaded this page on ' + new Date().toLocaleString(),
             filterLists: [],
-            newListUrl: "",
+            newListUrl: '',
+            defaultListUrl: 'https://raw.githubusercontent.com/jgerstbe/nbttv/filterlists/assets/default.json'
         }
     },
     methods: {
         getFilterLists: async function() {
-            this.filterLists = await getFilterLists();
-            console.log('filterLists', this.filterLists);
+            this.filterLists = await store.getFilterLists();
         },
         setFilterLists: function() {
-            if (!this.filterLists || this.filterLists.length == 0) {
-                return;
-            }
-            setFilterLists(this.filterLists);
+            store.setFilterLists(this.filterLists);
+            setTimeout(() => this.getFilterLists(), 1000)
         },
         addList: async function() {
             if (!this.newListUrl) {
@@ -26,10 +24,17 @@ new Vue({
             }
             
             const list = await fetch(this.newListUrl).then(r => r.json());
-            
-            if (list && list.keywords) {                
+            if (
+                list &&
+                list.name &&
+                list.author &&
+                list.keywords &&
+                (list.keywords.length > 0) &&
+                list.embeds &&
+                (list.embeds.length > 0)
+            ) {                
                 this.newListUrl = "";
-                this.filterLists.push(this.newListUrl);
+                this.filterLists.push(list);
                 this.setFilterLists(this.filterLists);
             } 
         },

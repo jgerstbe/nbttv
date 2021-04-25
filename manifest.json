@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "NBTTV",
-  "homepage_url": "http://localhost:8080/",
+  "homepage_url": "https://github.com/jgerstbe/nbttv/",
   "description": "Remove channels from ttv via keywords.",
-  "version": "0.1",
+  "version": "0.2",
   "browser_action": {
     "default_popup": "app/popup/popup.html"
   },
