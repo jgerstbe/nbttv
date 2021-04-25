@@ -16,11 +16,10 @@ Build using [vue](https://vuejs.org/), [tailwind](https://tailwindcss.com/) and 
 ![Example](/assets/example.png)
 
 ## how to install
-- download or clone
+- download zip from release page
 - visit `chrome://extensions/` / `brave://extensions/`
 - enable developer mode
-- load extension via `load unpacked extension`
-- or drag and drop release `nbttv_<version>.zip` from `releases` folder
+- drag and drop the zip to install
 ## filterlists
 You can subscribe to public filter lists to keep up to date with content that should be filtered.
 
