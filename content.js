@@ -19,7 +19,7 @@ function antiBonk(selectors, keywords) {
     selectors.forEach(element => {
         const text = element.innerText;
         keywords.every(keyword => {
-            if (text.toLowerCase().includes(keyword)) {
+            if (text.toLowerCase().includes(keyword.toLowerCase())) {
                 element.parentNode.innerHTML = getRandom(embeds);
                 return false;
             }
@@ -101,8 +101,29 @@ function loadListsFromStorage() {
                             setTimeout(burst, 500);
                             interval = setInterval(scanForBonks, 5000);
                         }
+                        // load localList
+                        if ((index+1) == lists.length) {
+                            loadLocalListFromStorage();
+                        }
                     })
             });
+        } else {
+            loadLocalListFromStorage();
+            // start scan
+            setTimeout(burst, 500);
+            interval = setInterval(scanForBonks, 5000);
+        }
+    });
+}
+
+function loadLocalListFromStorage() {
+    chrome.storage.sync.get("localList", (data) => {
+        let list = data.localList;
+        if (Array.isArray(list) && list[0]) {
+            keywords = [...keywords, ...(list[0].keywords)];
+            if (!embeds || (embeds.length === 0)) {
+                embeds = [''];
+            }
         }
     });
 }

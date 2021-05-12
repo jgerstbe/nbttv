@@ -3,7 +3,7 @@
   "name": "NBTTV",
   "homepage_url": "https://github.com/jgerstbe/nbttv/",
   "description": "Remove channels from ttv via keywords.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "browser_action": {
     "default_popup": "app/popup/popup.html"
   },
