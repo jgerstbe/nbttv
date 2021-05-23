@@ -63,7 +63,7 @@ function getRandom(list) {
  */
 function scanForBonks() {
     const url = window.location.href;
-    let selectors = ['.shelf-element__impression-wrapper', '.tw-flex.tw-flex-column.tw-mg-0 .tw-hover-accent-effect .tw-aspect', '.tw-flex.tw-flex-column.tw-mg-0'];
+    let selectors = ['.shelf-element__impression-wrapper', '.tw-flex.tw-flex-column.tw-mg-0 .tw-hover-accent-effect .tw-aspect', '.tw-flex.tw-flex-column.tw-mg-0', '.sc-AxjAm.dBWNsP'];
     selectors = selectors.map(s => [...document.querySelectorAll(s)]).flat(2);
 
     if (
